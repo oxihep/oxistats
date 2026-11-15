@@ -7,6 +7,17 @@ all-features = true
 [advisories]
 version = 2
 yanked = "deny"
+# Advisories accepted for now, each with its reason. Anything new still fails.
+ignore = [
+  # `paste` (via argmin, the optional Nelder-Mead fitter) is unmaintained; a
+  # build-time proc macro with no known vulnerability and no maintained
+  # drop-in replacement in argmin yet.
+  { id = "RUSTSEC-2024-0436", reason = "unmaintained build-time macro via argmin; no vulnerability" },
+  # `ttf-parser` (oxiplot font parsing, also the vendored ReX engine) is
+  # unmaintained. It parses only the fonts bundled with oxiplot or supplied
+  # by the user, not untrusted data. Replacing it is tracked in oxiplot.
+  { id = "RUSTSEC-2026-0192", reason = "unmaintained font parser; parses bundled or user-chosen fonts only" },
+]
 
 [bans]
 multiple-versions = "warn"
