@@ -8,6 +8,9 @@ on:
 env:
   CARGO_TERM_COLOR: always
   RUSTFLAGS: -D warnings
+  # The toolchain every stable job uses. Pinned so a new Rust release (new
+  # lints under -D warnings) cannot break main on its own; bump it in a PR.
+  RUST_STABLE: "1.100"
 
 jobs:
   test:
@@ -16,9 +19,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Install stable toolchain
-        uses: dtolnay/rust-toolchain@stable
+      - name: Install the pinned stable toolchain
+        uses: dtolnay/rust-toolchain@master
         with:
+          toolchain: ${{ env.RUST_STABLE }}
           components: rustfmt, clippy
 
       - name: Cache cargo
@@ -39,8 +43,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Install stable toolchain
-        uses: dtolnay/rust-toolchain@stable
+      - name: Install the pinned stable toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_STABLE }}
 
       - name: Install cargo-hack
         uses: taiki-e/install-action@cargo-hack
@@ -76,8 +82,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Install stable toolchain
-        uses: dtolnay/rust-toolchain@stable
+      - name: Install the pinned stable toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_STABLE }}
 
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2
@@ -91,8 +99,22 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Install stable toolchain
-        uses: dtolnay/rust-toolchain@stable
+      - name: Install the pinned stable toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_STABLE }}
 
       - name: Package and verify
         run: cargo package
+
+  supply-chain:
+    name: supply chain (cargo-deny)
+    # RustSec advisories, yanked crates, and dependency sources (crates.io,
+    # plus git only from github.com/oxihep). Configured in deny.toml.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check advisories bans sources

@@ -1,0 +1,17 @@
+# Weekly dependency update PRs. The oxihep git dependencies move in lockstep
+# by hand (see oxiroot's RELEASING.md), so they are not tracked here.
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "oxi*"
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]

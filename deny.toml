@@ -1,0 +1,21 @@
+# cargo-deny configuration, run in CI by the `supply-chain` job:
+#   cargo deny check advisories bans sources
+
+[graph]
+all-features = true
+
+[advisories]
+version = 2
+yanked = "deny"
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+allow-wildcard-paths = true
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+# The oxihep crates are git dependencies until they are on crates.io.
+allow-org = { github = ["oxihep"] }
