@@ -1,4 +1,4 @@
-//! The oxiroot-stat statistics integration tests, compiled as one binary so the
+//! The oxistats statistics integration tests, compiled as one binary so the
 //! suite links once. Each module is one topic.
 
 mod degenerate_inputs;

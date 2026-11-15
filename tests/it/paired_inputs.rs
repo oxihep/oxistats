@@ -3,7 +3,7 @@
 //! pairing up to the shorter one (which used to report, for example, a perfect
 //! correlation from data that was never paired).
 
-use oxiroot_stat::{
+use oxistats::{
     chisquare, combine_measurements, kl_divergence, pearsonr, spearmanr, weighted_mean,
     weighted_std, wilcoxon, StatError,
 };

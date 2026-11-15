@@ -3,10 +3,10 @@
 //! whose numerics track [`scipy.stats`](https://docs.scipy.org/doc/scipy/reference/stats.html)
 //! (and `scipy.special`) function-for-function, verified against it.
 //!
-//! It began as the special functions behind oxiroot's histogram comparison tests
-//! ([`oxiroot_hist`](https://crates.io/crates/oxiroot-hist)'s `chi2_test`/
-//! `kolmogorov_test`) and the goodness-of-fit p-value of
-//! [`oxiroot_fit`](https://crates.io/crates/oxiroot-fit), and now offers:
+//! It began inside [oxiroot](https://github.com/oxihep/oxiroot),
+//! as the special functions behind its histogram comparison tests
+//! (`chi2_test`/`kolmogorov_test`) and the goodness-of-fit p-value of
+//! [`oxifit`](https://docs.rs/oxifit), and now offers:
 //!
 //! - **Special functions** — [`erf`]/[`erfc`], [`gammaln`], the regularized
 //!   incomplete gamma ([`gammainc`]/[`gammaincc`]) and beta ([`betainc`])
@@ -51,7 +51,7 @@
 //!
 //! Conventions match RooFit and ROOT and, where they exist, `scipy.stats`
 //! (`crystalball`/`cauchy`/`moyal`) and `scipy.special.voigt_profile`.
-//! `oxiroot-fit` wraps these as fittable models.
+//! [`oxifit`](https://docs.rs/oxifit) wraps these as fittable models.
 //!
 //! # Invalid input
 //!

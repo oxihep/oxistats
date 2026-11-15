@@ -16,7 +16,7 @@ const MAX_LOG: f64 = 709.782712893384;
 /// were, they would return `NaN` rather than spin.
 const MAX_EXACT_STEP: f64 = 9_007_199_254_740_992.0;
 /// The Euler–Mascheroni constant γ.
-const EULER: f64 = 0.577_215_664_901_532_9;
+const EULER: f64 = std::f64::consts::EULER_GAMMA;
 
 /// Iteration budget for the incomplete-gamma series and continued fraction.
 ///

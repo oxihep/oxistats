@@ -2,7 +2,7 @@
 //! expected value here was produced by the corresponding scipy call on the same
 //! input; the tests are self-contained (no scipy at build time).
 
-use oxiroot_stat::*;
+use oxistats::*;
 
 /// The classic 8-point sample used across scipy's descriptive examples.
 const DATA: [f64; 8] = [2.0, 4.0, 4.0, 4.0, 5.0, 5.0, 7.0, 9.0];

@@ -2,7 +2,7 @@
 """Generate the coefficient table for Temme's uniform asymptotic expansion of
 the regularized incomplete gamma functions (pure Python, standard library only).
 
-    python3 scripts/gen_temme_coeffs.py > crates/oxiroot-stat/src/special/temme.rs
+    python3 scripts/gen_temme_coeffs.py > src/special/temme.rs
 
 The expansion (DLMF 8.12) writes, with lambda = x/a and eta the signed root of
 eta^2/2 = lambda - 1 - ln(lambda),

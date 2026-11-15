@@ -15,7 +15,7 @@
 //!
 //! Conventions match RooFit / ROOT and, where they exist, `scipy.stats`
 //! (`crystalball`/`cauchy`/`moyal`) and `scipy.special.voigt_profile`; the
-//! `oxiroot-fit` crate wraps these as fittable [`Model`](../../oxiroot_fit/struct.Model.html)s.
+//! [`oxifit`](https://docs.rs/oxifit) crate wraps these as fittable [`Model`](https://docs.rs/oxifit/latest/oxifit/struct.Model.html)s.
 
 use std::f64::consts::{PI, SQRT_2};
 

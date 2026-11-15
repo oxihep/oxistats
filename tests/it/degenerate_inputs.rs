@@ -9,7 +9,7 @@ use std::sync::mpsc;
 use std::thread;
 use std::time::Duration;
 
-use oxiroot_stat::{
+use oxistats::{
     chi_square_prob, erf, erfc, gammainc, gammaincc, ks_1samp, ks_2samp, mannwhitneyu, poisson_cdf,
     Normal,
 };
@@ -140,7 +140,7 @@ fn zero_and_negative_arguments_follow_scipy() {
     assert_eq!((gammainc(0.0, 0.5), gammaincc(0.0, 0.5)), (1.0, 0.0));
     assert_eq!((gammainc(2.5, 0.0), gammaincc(2.5, 0.0)), (0.0, 1.0));
     // The distributions keep their support: a chi-squared is 0 below 0.
-    let chi2 = oxiroot_stat::ChiSquared::new(3.0);
+    let chi2 = oxistats::ChiSquared::new(3.0);
     assert_eq!((chi2.cdf(-1.0), chi2.sf(-1.0)), (0.0, 1.0));
     assert!(poisson_cdf(2.0, -1.0).is_nan()); // a negative mean
 }

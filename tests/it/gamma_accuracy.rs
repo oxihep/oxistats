@@ -7,7 +7,7 @@
 //! expansion handled `x ≈ a`, the relative error grew with `a`: 10⁻¹² at
 //! `a = 1000`, 10⁻⁹ at `10⁶`, 10⁻⁵ at `10¹⁰`, and the answer was lost by `10¹⁵`.
 
-use oxiroot_stat::{gammainc, gammaincc};
+use oxistats::{gammainc, gammaincc};
 
 /// `(a, x, P(a, x), Q(a, x))`: at `x = a − √a`, `a + √a` and `a + 3√a` (a
 /// standard deviation below the peak, one above, three above), plus tails.

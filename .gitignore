@@ -1,0 +1,10 @@
+/target
+**/*.rs.bk
+Cargo.lock
+
+# Python oracle / fixture-generation environment
+/.venv
+__pycache__/
+*.pyc
+
+.claude/settings.local.json

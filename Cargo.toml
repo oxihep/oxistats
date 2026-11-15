@@ -1,16 +1,21 @@
 [package]
-name = "oxiroot-stat"
-version.workspace = true
-edition.workspace = true
-rust-version.workspace = true
-license.workspace = true
-repository.workspace = true
-homepage.workspace = true
+name = "oxistats"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.95"
+license = "MIT"
+repository = "https://github.com/oxihep/oxistats"
+documentation = "https://docs.rs/oxistats"
+readme = "README.md"
 keywords = ["statistics", "distributions", "scipy", "hep", "physics"]
 categories = ["science", "mathematics"]
 description = "Pure-Rust statistics — special functions, distributions, descriptive stats, correlation, hypothesis tests, and HEP lineshapes (Crystal Ball, Voigt, …), verified against scipy.stats"
 
 [dependencies]
 
-[lints]
-workspace = true
+[lints.rust]
+unsafe_code = "deny"
+missing_docs = "warn"
+
+[lints.clippy]
+all = "warn"
