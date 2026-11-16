@@ -81,11 +81,11 @@ mod special;
 
 pub use correlation::{pearsonr, spearmanr};
 pub use descriptive::{
-    describe, entropy, gmean, hmean, iqr, kl_divergence, kurtosis, median, median_abs_deviation,
-    moment, quantile, rankdata, sem, skew, variation, zscore, Describe,
+    Describe, describe, entropy, gmean, hmean, iqr, kl_divergence, kurtosis, median,
+    median_abs_deviation, moment, quantile, rankdata, sem, skew, variation, zscore,
 };
 pub use distributions::{
-    binom_cdf, binom_sf, poisson_cdf, poisson_sf, ChiSquared, FisherF, Normal, StudentT,
+    ChiSquared, FisherF, Normal, StudentT, binom_cdf, binom_sf, poisson_cdf, poisson_sf,
 };
 pub use error::StatError;
 pub use hypothesis::{

@@ -101,11 +101,7 @@ impl StudentT {
     pub fn cdf(&self, x: f64) -> f64 {
         let v = self.df;
         let tail = 0.5 * betainc(v / 2.0, 0.5, v / (v + x * x));
-        if x <= 0.0 {
-            tail
-        } else {
-            1.0 - tail
-        }
+        if x <= 0.0 { tail } else { 1.0 - tail }
     }
     /// Survival function `P(X > x)`.
     #[must_use]

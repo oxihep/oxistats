@@ -4,8 +4,8 @@
 //! correlation from data that was never paired).
 
 use oxistats::{
-    chisquare, combine_measurements, kl_divergence, pearsonr, spearmanr, weighted_mean,
-    weighted_std, wilcoxon, StatError,
+    StatError, chisquare, combine_measurements, kl_divergence, pearsonr, spearmanr, weighted_mean,
+    weighted_std, wilcoxon,
 };
 
 const LONG: [f64; 5] = [1.0, 2.0, 3.0, 4.0, 5.0];

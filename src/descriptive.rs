@@ -2,7 +2,7 @@
 //! conventions (population moments unless noted; `iqr`/`median` use linear
 //! interpolation like NumPy). Empty input yields `NaN`.
 
-use crate::error::{check_paired, StatError};
+use crate::error::{StatError, check_paired};
 
 /// Arithmetic mean, or `NaN` for an empty slice.
 pub(crate) fn mean(data: &[f64]) -> f64 {
@@ -78,11 +78,7 @@ pub fn kurtosis(data: &[f64], fisher: bool, bias: bool) -> f64 {
         let n = data.len() as f64;
         (1.0 / ((n - 2.0) * (n - 3.0))) * ((n * n - 1.0) * raw - 3.0 * (n - 1.0).powi(2))
     };
-    if fisher {
-        excess
-    } else {
-        excess + 3.0
-    }
+    if fisher { excess } else { excess + 3.0 }
 }
 
 /// Coefficient of variation `std / mean` (population std, `ddof = 0`) —
