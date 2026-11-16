@@ -58,7 +58,7 @@ jobs:
         run: cargo hack check --each-feature --no-dev-deps
 
   msrv:
-    name: minimum Rust version (1.100)
+    name: minimum Rust version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
