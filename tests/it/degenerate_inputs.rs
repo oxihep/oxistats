@@ -10,8 +10,8 @@ use std::thread;
 use std::time::Duration;
 
 use oxistats::{
-    chi_square_prob, erf, erfc, gammainc, gammaincc, ks_1samp, ks_2samp, mannwhitneyu, poisson_cdf,
-    Normal,
+    Normal, chi_square_prob, erf, erfc, gammainc, gammaincc, ks_1samp, ks_2samp, mannwhitneyu,
+    poisson_cdf,
 };
 
 /// Run `f` on a worker thread and return its result, failing the test if it

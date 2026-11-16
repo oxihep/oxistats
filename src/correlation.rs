@@ -2,7 +2,7 @@
 
 use crate::descriptive::{mean, rankdata};
 use crate::distributions::StudentT;
-use crate::error::{check_paired, StatError};
+use crate::error::{StatError, check_paired};
 
 /// Fewest pairs a correlation coefficient is defined for.
 const MIN_PAIRS: usize = 2;

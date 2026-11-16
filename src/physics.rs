@@ -5,7 +5,7 @@
 use std::f64::consts::SQRT_2;
 
 use crate::distributions::ChiSquared;
-use crate::error::{check_paired, StatError};
+use crate::error::{StatError, check_paired};
 use crate::special::{betaincinv, erfc, gammaln, ndtri};
 
 /// One-sided p-value → Gaussian significance `Z` (number of σ): `Z = Φ⁻¹(1 − p)`.

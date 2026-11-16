@@ -13,10 +13,10 @@ fn close(a: f64, b: f64, tol: f64) -> bool {
     (a - b).abs() <= tol * (1.0 + b.abs())
 }
 macro_rules! approx {
-    ($a:expr, $b:expr) => {
+    ($a:expr_2021, $b:expr_2021) => {
         assert!(close($a, $b, 1e-9), "{} = {} != {}", stringify!($a), $a, $b)
     };
-    ($a:expr, $b:expr, $tol:expr) => {
+    ($a:expr_2021, $b:expr_2021, $tol:expr_2021) => {
         assert!(close($a, $b, $tol), "{} = {} != {}", stringify!($a), $a, $b)
     };
 }

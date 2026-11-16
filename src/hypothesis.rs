@@ -2,16 +2,12 @@
 
 use crate::descriptive::{kurtosis, mean, rankdata, skew, std_dev};
 use crate::distributions::{ChiSquared, Normal, StudentT};
-use crate::error::{check_paired, StatError};
+use crate::error::{StatError, check_paired};
 
 /// Cap a two-sided p-value at 1 without hiding `NaN`: `f64::min` would turn a
 /// `NaN` into 1, a confident answer computed from nothing.
 fn cap_p(p: f64) -> f64 {
-    if p > 1.0 {
-        1.0
-    } else {
-        p
-    }
+    if p > 1.0 { 1.0 } else { p }
 }
 
 /// Whether a sample holds a `NaN`, which the rank and KS tests propagate as a
