@@ -41,13 +41,15 @@ this crate).
 
 ## Examples
 
-Three runnable tours, each printing what it computes:
+Runnable tours, each printing what it computes:
 
 | Example | Shows |
 | --- | --- |
 | [`tests_and_distributions`](examples/tests_and_distributions.rs) | `pdf`/`cdf`/`sf`/`ppf` of the distributions, a χ² p-value, `chisquare`, two-sample t and Kolmogorov–Smirnov tests, a one-sample KS test against a model |
 | [`lineshapes`](examples/lineshapes.rs) | The Z-peak shapes side by side (Gaussian, Crystal Ball, double Crystal Ball, Breit–Wigner, relativistic BW, Voigt), the unit-area check, ARGUS and Landau |
 | [`intervals`](examples/intervals.rs) | Significance ↔ p-value, efficiency intervals (Clopper–Pearson, Wilson, Agresti–Coull), a Poisson interval, Feldman–Cousins, combining measurements, a bootstrap interval |
+| [`discovery_significance`](examples/discovery_significance.rs) | s/√b versus the Asimov significance, a background uncertainty, an observed excess and the look-elsewhere effect, the luminosity needed for 5σ |
+| [`upper_limits`](examples/upper_limits.rs) | 95 % CL limits on a signal in a counting experiment: classical, CLs and Feldman–Cousins side by side |
 
 ```sh
 cargo run --example intervals
