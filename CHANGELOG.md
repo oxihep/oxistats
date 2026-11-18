@@ -6,6 +6,11 @@ Notable changes to oxistats, by release. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Runnable examples: `tests_and_distributions`, `lineshapes` and
+  `intervals` (`cargo run --example …`), listed in the README.
+
 ### Changed
 
 - **Rust 1.100 and edition 2024.** The minimum supported Rust version
