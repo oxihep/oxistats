@@ -3,6 +3,7 @@
 [![CI](https://github.com/oxihep/oxistats/actions/workflows/ci.yml/badge.svg)](https://github.com/oxihep/oxistats/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Rust 1.100+](https://img.shields.io/badge/rust-1.100%2B-orange.svg)](https://www.rust-lang.org)
+[![API docs](https://img.shields.io/badge/docs-API-blue.svg)](https://oxihep.github.io/oxistats/oxistats/)
 
 Pure-Rust statistics for physics: a dependency-free `f64` core whose numerics
 track [`scipy.stats`](https://docs.scipy.org/doc/scipy/reference/stats.html)
