@@ -6,6 +6,10 @@ Notable changes to oxistats, by release. The format follows
 
 ## [Unreleased]
 
+## [0.2.0]
+
+API review toward 1.0 (breaking).
+
 ### Added
 
 - Runnable examples: `tests_and_distributions`, `lineshapes` and
@@ -13,6 +17,11 @@ Notable changes to oxistats, by release. The format follows
 
 ### Changed
 
+- **`#[non_exhaustive]`** on `Describe`, `Normal`, `StudentT`, `ChiSquared`
+  and `FisherF`: build them with their constructors (`Normal::new`, …);
+  their fields stay readable.
+- **`Normal::std` is now `Normal::std_dev`**, the name the oxihep crates use
+  for a standard deviation everywhere.
 - **Rust 1.100 and edition 2024.** The minimum supported Rust version
   (`rust-version`) moves from 1.95 to 1.100, the current stable release that
   CI already builds with, and the crates move to the 2024 edition (migrated

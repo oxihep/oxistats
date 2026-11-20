@@ -201,6 +201,7 @@ pub fn zscore(data: &[f64]) -> Vec<f64> {
 
 /// A one-shot descriptive summary — the fields of `scipy.stats.describe`.
 #[derive(Debug, Clone, Copy, PartialEq)]
+#[non_exhaustive]
 pub struct Describe {
     /// Number of observations.
     pub nobs: usize,
