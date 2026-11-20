@@ -30,54 +30,56 @@ fn invert(cdf: impl Fn(f64) -> f64, p: f64, mut lo: f64, mut hi: f64) -> f64 {
     0.5 * (lo + hi)
 }
 
-/// The normal (Gaussian) distribution `N(mean, std²)` — `scipy.stats.norm`.
+/// The normal (Gaussian) distribution `N(mean, std_dev²)` — `scipy.stats.norm`.
 #[derive(Debug, Clone, Copy)]
+#[non_exhaustive]
 pub struct Normal {
     /// Mean (location).
     pub mean: f64,
     /// Standard deviation (scale).
-    pub std: f64,
+    pub std_dev: f64,
 }
 
 impl Normal {
-    /// `N(mean, std²)`.
+    /// `N(mean, std_dev²)`.
     #[must_use]
-    pub fn new(mean: f64, std: f64) -> Normal {
-        Normal { mean, std }
+    pub fn new(mean: f64, std_dev: f64) -> Normal {
+        Normal { mean, std_dev }
     }
     /// The standard normal `N(0, 1)`.
     #[must_use]
     pub fn standard() -> Normal {
         Normal {
             mean: 0.0,
-            std: 1.0,
+            std_dev: 1.0,
         }
     }
     /// Probability density at `x`.
     #[must_use]
     pub fn pdf(&self, x: f64) -> f64 {
-        let z = (x - self.mean) / self.std;
-        (-0.5 * z * z).exp() / (self.std * (2.0 * PI).sqrt())
+        let z = (x - self.mean) / self.std_dev;
+        (-0.5 * z * z).exp() / (self.std_dev * (2.0 * PI).sqrt())
     }
     /// Cumulative distribution `P(X ≤ x)`.
     #[must_use]
     pub fn cdf(&self, x: f64) -> f64 {
-        0.5 * erfc(-(x - self.mean) / (self.std * SQRT_2))
+        0.5 * erfc(-(x - self.mean) / (self.std_dev * SQRT_2))
     }
     /// Survival function `P(X > x) = 1 − cdf(x)`.
     #[must_use]
     pub fn sf(&self, x: f64) -> f64 {
-        0.5 * erfc((x - self.mean) / (self.std * SQRT_2))
+        0.5 * erfc((x - self.mean) / (self.std_dev * SQRT_2))
     }
     /// Quantile / inverse CDF.
     #[must_use]
     pub fn ppf(&self, p: f64) -> f64 {
-        self.mean + self.std * ndtri(p)
+        self.mean + self.std_dev * ndtri(p)
     }
 }
 
 /// Student's t distribution with `df` degrees of freedom — `scipy.stats.t`.
 #[derive(Debug, Clone, Copy)]
+#[non_exhaustive]
 pub struct StudentT {
     /// Degrees of freedom.
     pub df: f64,
@@ -117,6 +119,7 @@ impl StudentT {
 
 /// The chi-squared distribution with `df` degrees of freedom — `scipy.stats.chi2`.
 #[derive(Debug, Clone, Copy)]
+#[non_exhaustive]
 pub struct ChiSquared {
     /// Degrees of freedom.
     pub df: f64,
@@ -172,6 +175,7 @@ impl ChiSquared {
 
 /// The F distribution with `(dfn, dfd)` degrees of freedom — `scipy.stats.f`.
 #[derive(Debug, Clone, Copy)]
+#[non_exhaustive]
 pub struct FisherF {
     /// Numerator degrees of freedom.
     pub dfn: f64,
