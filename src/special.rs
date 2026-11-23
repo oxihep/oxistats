@@ -419,26 +419,238 @@ fn temme(a: f64, x: f64, lower: bool) -> f64 {
     head + sign * (-0.5 * a * eta * eta).exp() * sum / (2.0 * std::f64::consts::PI * a).sqrt()
 }
 
-/// The error function `erf(x)` — `scipy.special.erf`. Built from the regularized
-/// incomplete gamma: `erf(x) = sign(x) · P(1/2, x²)`.
+/// The error function `erf(x)` — `scipy.special.erf`, to about 1 ulp.
+///
+/// fdlibm's rational approximations (as in musl and most C libraries, and so
+/// in ROOT's `TMath::Erf`): a few dozen floating-point operations, where the
+/// incomplete-gamma route took several hundred.
 #[must_use]
 pub fn erf(x: f64) -> f64 {
-    if x < 0.0 {
-        -gammainc(0.5, x * x)
-    } else {
-        gammainc(0.5, x * x)
+    let bits = x.to_bits();
+    let ix = high_word(bits) & 0x7fff_ffff;
+    let negative = bits >> 63 != 0;
+    if ix >= 0x7ff0_0000 {
+        // erf(NaN) = NaN, erf(±inf) = ±1.
+        return if x.is_nan() {
+            x
+        } else if negative {
+            -1.0
+        } else {
+            1.0
+        };
     }
+    if ix < 0x3feb_0000 {
+        // |x| < 0.84375
+        if ix < 0x3e30_0000 {
+            // |x| < 2⁻²⁸: avoid underflow
+            return 0.125 * (8.0 * x + EFX8 * x);
+        }
+        let z = x * x;
+        return x + x * (erf_small_p(z) / erf_small_q(z));
+    }
+    let y = if ix < 0x4018_0000 {
+        // |x| < 6
+        1.0 - erfc_tail(ix, x)
+    } else {
+        1.0 - f64::MIN_POSITIVE
+    };
+    if negative { -y } else { y }
 }
 
 /// The complementary error function `erfc(x) = 1 - erf(x)` —
-/// `scipy.special.erfc`. Uses the tail-accurate `Q(1/2, x²)` for `x >= 0`.
+/// `scipy.special.erfc`, to about 1 ulp, accurate in the tail (fdlibm's, as
+/// [`erf`]).
 #[must_use]
 pub fn erfc(x: f64) -> f64 {
-    if x < 0.0 {
-        1.0 + gammainc(0.5, x * x)
-    } else {
-        gammaincc(0.5, x * x)
+    let bits = x.to_bits();
+    let ix = high_word(bits) & 0x7fff_ffff;
+    let negative = bits >> 63 != 0;
+    if ix >= 0x7ff0_0000 {
+        // erfc(NaN) = NaN, erfc(+inf) = 0, erfc(-inf) = 2.
+        return if x.is_nan() {
+            x
+        } else if negative {
+            2.0
+        } else {
+            0.0
+        };
     }
+    if ix < 0x3feb_0000 {
+        // |x| < 0.84375
+        if ix < 0x3c70_0000 {
+            // |x| < 2⁻⁵⁶
+            return 1.0 - x;
+        }
+        let z = x * x;
+        let y = erf_small_p(z) / erf_small_q(z);
+        return if negative || ix < 0x3fd0_0000 {
+            1.0 - (x + x * y)
+        } else {
+            0.5 - (x - 0.5 + x * y)
+        };
+    }
+    if ix < 0x403c_0000 {
+        // |x| < 28
+        let t = erfc_tail(ix, x);
+        return if negative { 2.0 - t } else { t };
+    }
+    if negative { 2.0 } else { 0.0 }
+}
+
+/// The high 32 bits of an `f64`'s representation (fdlibm's `GET_HIGH_WORD`).
+fn high_word(bits: u64) -> u32 {
+    u32::try_from(bits >> 32).unwrap_or(u32::MAX)
+}
+
+// fdlibm's coefficients (Sun Microsystems, 1993; freely redistributable).
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const ERX: f64 = 8.450_629_115_104_675_292_97e-1;
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const EFX8: f64 = 1.027_033_336_764_100_690_53;
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const PP: [f64; 5] = [
+    1.283_791_670_955_125_585_61e-1,
+    -3.250_421_072_470_014_993_70e-1,
+    -2.848_174_957_559_851_047_66e-2,
+    -5.770_270_296_489_441_591_57e-3,
+    -2.376_301_665_665_016_260_84e-5,
+];
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const QQ: [f64; 5] = [
+    3.979_172_239_591_553_528_19e-1,
+    6.502_224_998_876_729_444_85e-2,
+    5.081_306_281_875_765_627_76e-3,
+    1.324_947_380_043_216_445_26e-4,
+    -3.960_228_278_775_368_123_20e-6,
+];
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const PA: [f64; 7] = [
+    -2.362_118_560_752_659_440_77e-3,
+    4.148_561_186_837_483_316_66e-1,
+    -3.722_078_760_357_013_238_47e-1,
+    3.183_466_199_011_617_536_74e-1,
+    -1.108_946_942_823_966_774_76e-1,
+    3.547_830_432_561_823_593_71e-2,
+    -2.166_375_594_868_790_843_00e-3,
+];
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const QA: [f64; 6] = [
+    1.064_208_804_008_442_282_86e-1,
+    5.403_979_177_021_710_489_37e-1,
+    7.182_865_441_419_626_628_68e-2,
+    1.261_712_198_087_616_421_12e-1,
+    1.363_708_391_202_905_073_62e-2,
+    1.198_449_984_679_910_741_70e-2,
+];
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const RA: [f64; 8] = [
+    -9.864_944_034_847_148_227_05e-3,
+    -6.938_585_727_071_817_643_72e-1,
+    -1.055_862_622_532_329_098_14e1,
+    -6.237_533_245_032_600_603_96e1,
+    -1.623_966_694_625_734_703_55e2,
+    -1.846_050_929_067_110_359_94e2,
+    -8.128_743_550_630_659_342_46e1,
+    -9.814_329_344_169_145_485_92,
+];
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const SA: [f64; 8] = [
+    1.965_127_166_743_925_712_92e1,
+    1.376_577_541_435_190_426_00e2,
+    4.345_658_774_752_292_288_21e2,
+    6.453_872_717_332_678_803_36e2,
+    4.290_081_400_275_678_333_86e2,
+    1.086_350_055_417_794_351_34e2,
+    6.570_249_770_319_281_701_35,
+    -6.042_441_521_485_809_874_38e-2,
+];
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const RB: [f64; 7] = [
+    -9.864_942_924_700_099_285_97e-3,
+    -7.992_832_376_805_230_065_74e-1,
+    -1.775_795_491_775_475_198_89e1,
+    -1.606_363_848_558_219_160_62e2,
+    -6.375_664_433_683_896_277_22e2,
+    -1.025_095_131_611_077_249_54e3,
+    -4.835_191_916_086_513_970_19e2,
+];
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
+const SB: [f64; 7] = [
+    3.033_806_074_348_245_829_24e1,
+    3.257_925_129_965_739_188_26e2,
+    1.536_729_586_084_436_959_94e3,
+    3.199_858_219_508_595_539_08e3,
+    2.553_050_406_433_164_425_83e3,
+    4.745_285_412_069_553_672_15e2,
+    -2.244_095_244_658_581_833_62e1,
+];
+
+/// `c[0] + z·(c[1] + z·(…))`.
+fn horner(c: &[f64], z: f64) -> f64 {
+    c.iter().rev().fold(0.0, |acc, &k| acc * z + k)
+}
+
+/// `1 + z·(c[0] + z·(c[1] + …))`.
+fn horner1(c: &[f64], z: f64) -> f64 {
+    1.0 + z * horner(c, z)
+}
+
+fn erf_small_p(z: f64) -> f64 {
+    horner(&PP, z)
+}
+
+fn erf_small_q(z: f64) -> f64 {
+    horner1(&QQ, z)
+}
+
+/// `erfc(|x|)` for `0.84375 ≤ |x| < 28` (fdlibm's `erfc1`/`erfc2`).
+fn erfc_tail(ix: u32, x: f64) -> f64 {
+    if ix < 0x3ff4_0000 {
+        // |x| < 1.25
+        let s = x.abs() - 1.0;
+        return 1.0 - ERX - horner(&PA, s) / horner1(&QA, s);
+    }
+    let x = x.abs();
+    let s = 1.0 / (x * x);
+    let (r, big_s) = if ix < 0x4006_db6d {
+        // |x| < 1/0.35
+        (horner(&RA, s), horner1(&SA, s))
+    } else {
+        (horner(&RB, s), horner1(&SB, s))
+    };
+    // x with its low 32 bits cleared, so exp(-z²) is exact enough.
+    let z = f64::from_bits(x.to_bits() & 0xffff_ffff_0000_0000);
+    (-z * z - 0.5625).exp() * ((z - x) * (z + x) + r / big_s).exp() / x
 }
 
 /// Natural log of the beta function, `ln B(a, b)` — `scipy.special.betaln`.
