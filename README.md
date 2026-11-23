@@ -13,7 +13,7 @@ efficiency intervals and the Feldman–Cousins unified interval.
 
 ```toml
 [dependencies]
-oxistats = { git = "https://github.com/oxihep/oxistats", tag = "v0.2.0" }
+oxistats = { git = "https://github.com/oxihep/oxistats", tag = "v0.2.1" }
 ```
 
 ```rust

@@ -6,6 +6,17 @@ Notable changes to oxistats, by release. The format follows
 
 ## [Unreleased]
 
+## [0.2.1]
+
+### Changed
+
+- **`erf` and `erfc` are about 16× faster** (7 ns, from 111) and more
+  accurate: fdlibm's rational approximations, as the C library and ROOT's
+  `TMath::Erf` use, in place of the incomplete gamma. Against the C library
+  they are now within 2 ulps (`erf`) and 6 ulps (`erfc`), where they were
+  within 39 ulps, and `erfc` follows its tail to x = 28 where it flushed to
+  0 from x ≈ 26.7.
+
 ## [0.2.0]
 
 API review toward 1.0 (breaking).
