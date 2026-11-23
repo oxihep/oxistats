@@ -503,11 +503,20 @@ fn high_word(bits: u64) -> u32 {
 }
 
 // fdlibm's coefficients (Sun Microsystems, 1993; freely redistributable).
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const ERX: f64 = 8.450_629_115_104_675_292_97e-1;
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const EFX8: f64 = 1.027_033_336_764_100_690_53;
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const PP: [f64; 5] = [
     1.283_791_670_955_125_585_61e-1,
     -3.250_421_072_470_014_993_70e-1,
@@ -515,7 +524,10 @@ const PP: [f64; 5] = [
     -5.770_270_296_489_441_591_57e-3,
     -2.376_301_665_665_016_260_84e-5,
 ];
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const QQ: [f64; 5] = [
     3.979_172_239_591_553_528_19e-1,
     6.502_224_998_876_729_444_85e-2,
@@ -523,7 +535,10 @@ const QQ: [f64; 5] = [
     1.324_947_380_043_216_445_26e-4,
     -3.960_228_278_775_368_123_20e-6,
 ];
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const PA: [f64; 7] = [
     -2.362_118_560_752_659_440_77e-3,
     4.148_561_186_837_483_316_66e-1,
@@ -533,7 +548,10 @@ const PA: [f64; 7] = [
     3.547_830_432_561_823_593_71e-2,
     -2.166_375_594_868_790_843_00e-3,
 ];
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const QA: [f64; 6] = [
     1.064_208_804_008_442_282_86e-1,
     5.403_979_177_021_710_489_37e-1,
@@ -542,7 +560,10 @@ const QA: [f64; 6] = [
     1.363_708_391_202_905_073_62e-2,
     1.198_449_984_679_910_741_70e-2,
 ];
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const RA: [f64; 8] = [
     -9.864_944_034_847_148_227_05e-3,
     -6.938_585_727_071_817_643_72e-1,
@@ -553,7 +574,10 @@ const RA: [f64; 8] = [
     -8.128_743_550_630_659_342_46e1,
     -9.814_329_344_169_145_485_92,
 ];
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const SA: [f64; 8] = [
     1.965_127_166_743_925_712_92e1,
     1.376_577_541_435_190_426_00e2,
@@ -564,7 +588,10 @@ const SA: [f64; 8] = [
     6.570_249_770_319_281_701_35,
     -6.042_441_521_485_809_874_38e-2,
 ];
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const RB: [f64; 7] = [
     -9.864_942_924_700_099_285_97e-3,
     -7.992_832_376_805_230_065_74e-1,
@@ -574,7 +601,10 @@ const RB: [f64; 7] = [
     -1.025_095_131_611_077_249_54e3,
     -4.835_191_916_086_513_970_19e2,
 ];
-#[allow(clippy::excessive_precision, reason = "fdlibm's coefficients, as published")]
+#[allow(
+    clippy::excessive_precision,
+    reason = "fdlibm's coefficients, as published"
+)]
 const SB: [f64; 7] = [
     3.033_806_074_348_245_829_24e1,
     3.257_925_129_965_739_188_26e2,
